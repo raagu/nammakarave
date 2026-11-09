@@ -1,0 +1,89 @@
+NAMMA KARAVE — ASSET AND DATA NOTICES
+
+These notices identify third-party assets. No creator or Government endorsement
+is implied. Editorial research is maintained separately in the source repository.
+
+GEOGRAPHIC DATA
+Contains administrative boundary data from the Local Government Directory (LGD),
+Ministry of Panchayati Raj, Government of India, derived from the
+ramSeraph/indian_admin_boundaries compilation and the india-village-finder
+Karnataka district dataset, used under the Government Open Data License – India.
+Dataset snapshot: 25 September 2026. Retrieved: 9 November 2026.
+Source: https://github.com/mchittineni/india-village-finder/blob/main/karnataka/web/data/districts.geojson
+Upstream: https://github.com/ramSeraph/indian_admin_boundaries
+Licence: https://data.gov.in/government-open-data-license-india
+Modifications: Mercator projection, display simplification, normalized bilingual
+labels, and interior representative markers. Markers identify districts rather
+than office addresses. The map is for the website directory, not legal surveying.
+
+LEADERSHIP PHOTOGRAPH
+T. A. Narayana Gowda (2025), Vishwavani TV, via Wikimedia Commons.
+File: assets/images/ta-narayana-gowda-kannada-shawl.jpg
+Source: https://commons.wikimedia.org/wiki/File:T.A._Narayana_Gowda_(2025).jpg
+Licence: Creative Commons Attribution 3.0.
+https://creativecommons.org/licenses/by/3.0/
+Original retained; CSS display crops may apply.
+
+CULTURAL PHOTOGRAPHY
+Vidhana Soudha panoramic view — iMahesh / Wikimedia Commons.
+File: assets/images/vidhana-soudha.jpg
+Source: https://commons.wikimedia.org/wiki/File:Vidhana_Soudha_(Bengaluru)_-_Panoramic_view.jpg
+Licence: Creative Commons Attribution-ShareAlike 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Downloaded thumbnail, displayed with CSS crops.
+
+Mysore Palace Front View Morning — Rohanbharadwaj / Wikimedia Commons.
+File: assets/images/mysuru-palace.jpg
+Source: https://commons.wikimedia.org/wiki/File:Mysore_Palace_Front_View_Morning.jpg
+Licence: Creative Commons Attribution-ShareAlike 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Downloaded thumbnail, displayed with CSS crops.
+
+Shivanasamudra — Bharat Galagali / Wikimedia Commons.
+File: assets/images/kaveri-falls.webp
+Source: https://commons.wikimedia.org/wiki/File:Shivanasamudra.jpg
+Licence: Creative Commons Attribution-ShareAlike 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Resized to 1440px, encoded as WebP; CSS display crops may apply.
+
+Stone Chariot, Hampi — Snivas1008 / Wikimedia Commons.
+File: assets/images/hampi-heritage.webp
+Source: https://commons.wikimedia.org/wiki/File:Stone_Chariot,_Hampi.jpg
+Licence: Creative Commons Attribution-ShareAlike 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Resized to 1280px, encoded as WebP; CSS display crops may apply.
+
+Mysore Palace in night — Dattatreya N R / Wikimedia Commons.
+File: assets/images/mysuru-illuminated.webp
+Source: https://commons.wikimedia.org/wiki/File:Mysore_Palace_in_night.jpg
+Licence: Creative Commons Attribution-ShareAlike 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Resized to 1600px, encoded as WebP; CSS display crops may apply.
+
+BRANDING AND OWNER-SUPPLIED MATERIAL
+Kuvempu portrait — photographer unknown, Wikimedia Commons.
+File: assets/branding/kuvempu-portrait.webp
+Source: https://commons.wikimedia.org/wiki/File:Kuvempu.jpg
+The source labels this photograph public domain in India.
+Resized and encoded as WebP; a circular CSS crop is used.
+
+Previous Kuvempu portrait — Konkani Vishwakosh / Wikimedia Commons.
+File: assets/images/kuvempu-portrait.jpg
+Source: https://commons.wikimedia.org/wiki/File:Kuvempu-konkani_vishwakosh.jpg
+Licence: Creative Commons Attribution-ShareAlike 3.0.
+https://creativecommons.org/licenses/by-sa/3.0/
+
+Karave emblem — organization artwork, rights reserved.
+File: assets/branding/karave-emblem.webp; favicon derivative.
+Source: https://karnatakarakshanavedike.in/wp-content/uploads/2026/01/KRV-LOGO.png
+Encoded as WebP from the standalone transparent emblem.
+
+Homepage portrait — supplied by the website owner for this site.
+Files: assets/images/narayana-gowdru-header.jpeg (original),
+assets/leadership/narayana-gowdru.png (transparent homepage derivative).
+Photographer information was not supplied. The derivative removes the background
+and is delivered as a 400 x 400 PNG with an alpha channel.
+
+FONTS
+Inter — Rasmus Andersson; Noto Sans Kannada — The Noto Project.
+SIL Open Font License 1.1. See the accompanying FONTS.txt for licence text.
