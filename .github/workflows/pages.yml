@@ -37,10 +37,14 @@ jobs:
         env:
           SITE_URL: https://nammakarave.com
           GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
-      - name: Install the browser test runtime
-        run: npx playwright install --with-deps chromium
+      - name: Check the preinstalled browser
+        timeout-minutes: 1
+        run: google-chrome --version
       - name: Test desktop, mobile, and accessibility
+        timeout-minutes: 10
         run: npm run test:e2e
+        env:
+          PLAYWRIGHT_CHANNEL: chrome
       - name: Retain browser diagnostics on failure
         if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
