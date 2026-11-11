@@ -1,13 +1,20 @@
-import { lazy, Suspense, useEffect } from 'react';
-import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { lazy, Suspense, useEffect, type ReactNode } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { ContactBanner, Footer } from '../components/Footer';
 import { ErrorBoundary } from '../components/ErrorBoundary';
+import { Seo } from '../components/Seo';
 import { useLanguage } from '../i18n/context';
-import type { MessageKey } from '../i18n/messages';
+import { LanguageProvider } from '../i18n/LanguageProvider';
 import HomePage from '../pages/HomePage';
-import { officialCopy } from '../content/official';
-import type { Localized } from '../content/types';
+import {
+  languagePath,
+  languages,
+  pagePaths,
+  resolvePage,
+  routerBasename,
+  type PagePath,
+} from '../lib/routing';
 
 const AboutPage = lazy(() => import('../pages/AboutPage'));
 const HistoryPage = lazy(() => import('../pages/HistoryPage'));
@@ -21,52 +28,28 @@ const ContactPage = lazy(() => import('../pages/ContactPage'));
 const PrivacyPage = lazy(() => import('../pages/PrivacyPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
-const pageTitles: Record<string, MessageKey> = {
-  '/': 'navHome',
-  '/about': 'navAbout',
-  '/history': 'historyNav',
-  '/leadership': 'navLeadership',
-  '/programmes': 'navProgrammes',
-  '/campaigns': 'navCampaigns',
-  '/wings': 'navWings',
-  '/districts': 'navDistricts',
-  '/media': 'navMedia',
-  '/membership': 'navJoin',
-  '/contact': 'navContact',
-  '/privacy': 'privacy',
-  '/credits': 'credits',
-};
+const pages = {
+  '/': <HomePage />,
+  '/about': <AboutPage />,
+  '/history': <HistoryPage />,
+  '/leadership': <LeadershipPage />,
+  '/programmes': <ProgrammesPage />,
+  '/campaigns': <CampaignsPage />,
+  '/wings': <WingsPage />,
+  '/districts': <DistrictsPage />,
+  '/media': <MediaPage />,
+  '/contact': <ContactPage />,
+  '/privacy': <PrivacyPage />,
+} satisfies Record<PagePath, ReactNode>;
 
-function RouteEffects() {
-  const { pathname } = useLocation();
-  const { t, localize } = useLanguage();
-  useEffect(() => {
-    document.title = `${t(pageTitles[pathname] ?? 'notFound')} | ${t('brandShort')} — Karnataka Rakshana Vedike`;
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      'content',
-      pathname === '/history' || pathname === '/membership'
-        ? t(pathname === '/history' ? 'historyIntro' : 'formPrivacy')
-        : localize(
-            (
-              {
-                '/about': officialCopy.aboutPageIntro,
-                '/leadership': officialCopy.leadershipIntro,
-                '/programmes': officialCopy.programmesIntro,
-                '/campaigns': officialCopy.campaignsIntro,
-              } as Record<string, Localized>
-            )[pathname] ?? officialCopy.heroBody,
-          ),
-    );
-  }, [pathname, t, localize]);
+function AppLayout() {
+  const { t, language } = useLanguage();
+  const { pathname, search, hash } = useLocation();
+  const current = resolvePage(pathname);
   useEffect(() => {
     window.scrollTo(0, 0);
     document.getElementById('main')?.focus({ preventScroll: true });
-  }, [pathname]);
-  return null;
-}
-
-function AppLayout() {
-  const { t } = useLanguage();
+  }, [current.path]);
   return (
     <>
       <a
@@ -80,7 +63,7 @@ function AppLayout() {
         {t('skip')}
       </a>
       <Header />
-      <RouteEffects />
+      <Seo page={current.page} language={language} />
       <main id="main" tabIndex={-1}>
         <ErrorBoundary>
           <Suspense
@@ -94,19 +77,31 @@ function AppLayout() {
             }
           >
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/history" element={<HistoryPage />} />
-              <Route path="/leadership" element={<LeadershipPage />} />
-              <Route path="/programmes" element={<ProgrammesPage />} />
-              <Route path="/campaigns" element={<CampaignsPage />} />
-              <Route path="/wings" element={<WingsPage />} />
-              <Route path="/districts" element={<DistrictsPage />} />
-              <Route path="/media" element={<MediaPage />} />
-              <Route path="/membership" element={<Navigate to="/" replace />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/credits" element={<Navigate to="/" replace />} />
+              {pagePaths.flatMap((page) =>
+                languages.map((locale) => (
+                  <Route
+                    key={`${locale}:${page}`}
+                    path={languagePath(page, locale)}
+                    element={pages[page]}
+                  />
+                )),
+              )}
+              {['/membership', '/credits', '/en/membership', '/en/credits'].map((path) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={<Navigate to={languagePath('/', language)} replace />}
+                />
+              ))}
+              <Route
+                path="/kn/*"
+                element={
+                  <Navigate
+                    to={`${languagePath(current.retired ? '/' : current.path, 'kn')}${search}${hash}`}
+                    replace
+                  />
+                }
+              />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Suspense>
@@ -118,10 +113,29 @@ function AppLayout() {
   );
 }
 
+/** Shared by the browser router and the build-time static renderer. */
+export function SiteApp() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const current = resolvePage(location.pathname);
+  return (
+    <LanguageProvider
+      language={current.language}
+      onLanguageChange={(next) => {
+        navigate(`${languagePath(current.path, next)}${location.search}${location.hash}`);
+      }}
+    >
+      <ErrorBoundary>
+        <AppLayout />
+      </ErrorBoundary>
+    </LanguageProvider>
+  );
+}
+
 export function App() {
   return (
-    <HashRouter>
-      <AppLayout />
-    </HashRouter>
+    <BrowserRouter basename={routerBasename}>
+      <SiteApp />
+    </BrowserRouter>
   );
 }

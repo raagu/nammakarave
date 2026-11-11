@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { languagePath, resolvePage } from '../lib/routing';
+import { rememberLanguage } from '../i18n/preference';
+import { Link, NavLink } from './LocalizedLink';
 import { organization } from '../content/site';
 import { kuvempuPortrait } from '../content/imagery';
 import { navigation } from '../content/navigation';
@@ -9,7 +12,9 @@ import { Icon } from './Icon';
 import { Modal } from './Modal';
 
 export function Header() {
-  const { language, setLanguage, t, localize } = useLanguage();
+  const { language, t, localize } = useLanguage();
+  const location = useLocation();
+  const current = resolvePage(location.pathname);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>
@@ -67,23 +72,25 @@ export function Header() {
             </nav>
             <div className="header-actions">
               <div className="language-switch" role="group" aria-label="ಭಾಷೆ / Language">
-                <button
-                  type="button"
-                  onClick={() => setLanguage('kn')}
-                  aria-pressed={language === 'kn'}
+                <RouterLink
+                  to={`${languagePath(current.path, 'kn')}${location.search}${location.hash}`}
+                  onClick={() => rememberLanguage('kn')}
+                  aria-current={language === 'kn' ? 'page' : undefined}
                   lang="kn"
+                  hrefLang="kn"
                 >
                   ಕನ್ನಡ
-                </button>
+                </RouterLink>
                 <span aria-hidden="true">/</span>
-                <button
-                  type="button"
-                  onClick={() => setLanguage('en')}
-                  aria-pressed={language === 'en'}
+                <RouterLink
+                  to={`${languagePath(current.path, 'en')}${location.search}${location.hash}`}
+                  onClick={() => rememberLanguage('en')}
+                  aria-current={language === 'en' ? 'page' : undefined}
                   lang="en"
+                  hrefLang="en"
                 >
                   EN
-                </button>
+                </RouterLink>
               </div>
               <button
                 className="menu-toggle icon-button"

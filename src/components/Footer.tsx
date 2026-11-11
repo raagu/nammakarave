@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link } from './LocalizedLink';
 import { organization } from '../content/site';
 import { useLanguage } from '../i18n/context';
 import { Brand } from './Brand';
 import { Icon } from './Icon';
 import { navigation } from '../content/navigation';
 import { asset } from '../lib/assets';
+import { publicSite } from '../content/seo';
 
 export function ContactBanner() {
   const { t } = useLanguage();
@@ -90,7 +91,7 @@ export function Footer() {
         <p className="footer-disclaimer">{t('footerDisclaimer')}</p>
         <div className="footer-bottom">
           <span>
-            © {new Date().getFullYear()} {t('copyright')}
+            © {publicSite.year} {t('copyright')}
           </span>
           <div>
             <Link to="/privacy">{t('privacy')}</Link>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/LocalizedLink';
 import { campaigns, officialCopy as copy } from '../../content/official';
 import { useLanguage } from '../../i18n/context';
 import { Icon } from '../../components/Icon';

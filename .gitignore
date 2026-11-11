@@ -12,3 +12,6 @@ test-results/
 
 # Local design references with image permissions pending.
 review-media/
+
+# Build-time server renderer; never published.
+.ssg/

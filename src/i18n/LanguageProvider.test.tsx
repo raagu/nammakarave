@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { LanguageProvider, LANGUAGE_STORAGE_KEY } from './LanguageProvider';
+import { LanguageProvider } from './LanguageProvider';
+import { LANGUAGE_STORAGE_KEY } from './preference';
 import { useLanguage } from './context';
 
 function Probe() {
@@ -34,6 +35,19 @@ describe('language preference', () => {
       </LanguageProvider>,
     );
     expect(screen.getByTestId('probe')).toHaveTextContent('Home');
+  });
+  it('uses the URL language instead of a different stored preference', () => {
+    localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en');
+    const change = vi.fn();
+    render(
+      <LanguageProvider language="kn" onLanguageChange={change}>
+        <Probe />
+      </LanguageProvider>,
+    );
+    expect(screen.getByTestId('probe')).toHaveTextContent('ಮುಖಪುಟ');
+    fireEvent.click(screen.getByTestId('probe'));
+    expect(change).toHaveBeenCalledWith('en');
+    expect(screen.getByTestId('probe')).toHaveTextContent('ಮುಖಪುಟ');
   });
   it('survives denied storage access', () => {
     const read = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {

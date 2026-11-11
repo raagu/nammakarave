@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/LocalizedLink';
 import { wings } from '../../content/wings';
 import { useLanguage } from '../../i18n/context';
 import { Icon } from '../../components/Icon';

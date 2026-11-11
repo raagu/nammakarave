@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from './LocalizedLink';
 import { organization } from '../content/site';
 import { useLanguage } from '../i18n/context';
 import { AppImage } from './AppImage';

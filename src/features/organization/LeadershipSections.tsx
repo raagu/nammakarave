@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/LocalizedLink';
 import { organization } from '../../content/site';
 import { officialCopy as copy, leaderMessage } from '../../content/official';
 import { useLanguage } from '../../i18n/context';

@@ -173,7 +173,10 @@
     gap: 5px;
     font-size: 11px;
   }
-  .language-switch button {
+  .language-switch a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: 30px;
     min-height: 44px;
     padding: 4px 1px;
@@ -182,13 +185,13 @@
     color: #b4c0d2;
     font-weight: 500;
   }
-  .language-switch button[aria-pressed='true'] {
+  .language-switch a[aria-current='page'] {
     color: #f0cb63;
   }
   .language-switch > span {
     color: #74829a;
   }
-  .language-switch button[lang='en'] {
+  .language-switch a[lang='en'] {
     font-family: 'Inter Variable', sans-serif;
   }
   .header-join {

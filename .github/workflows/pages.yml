@@ -32,8 +32,11 @@ jobs:
         run: npm ci
       - name: Type checks, lint, formatting, and unit tests
         run: npm run check
-      - name: Build and verify transfer-size budgets
+      - name: Build static pages, verify SEO, and check transfer-size budgets
         run: npm run build
+        env:
+          SITE_URL: https://nammakarave.com
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
       - name: Install the browser test runtime
         run: npx playwright install --with-deps chromium
       - name: Test desktop, mobile, and accessibility

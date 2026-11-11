@@ -2,18 +2,21 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import type { Language } from '../content/types';
 import { messages } from './messages';
 import { LanguageContext, type LanguageValue } from './context';
+import { LANGUAGE_STORAGE_KEY, readLanguagePreference, rememberLanguage } from './preference';
 
-export const LANGUAGE_STORAGE_KEY = 'namma-karave.language';
-function readPreference(): Language {
-  try {
-    return localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'en' ? 'en' : 'kn';
-  } catch {
-    return 'kn';
-  }
-}
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, updateLanguage] = useState<Language>(readPreference);
+export function LanguageProvider({
+  children,
+  language: explicitLanguage,
+  onLanguageChange,
+}: {
+  children: ReactNode;
+  language?: Language;
+  onLanguageChange?: (language: Language) => void;
+}) {
+  const [preference, updatePreference] = useState<Language>(
+    () => explicitLanguage ?? readLanguagePreference(),
+  );
+  const language = explicitLanguage ?? preference;
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
@@ -21,12 +24,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     () => ({
       language,
       setLanguage: (next) => {
-        updateLanguage(next);
-        try {
-          localStorage.setItem(LANGUAGE_STORAGE_KEY, next);
-        } catch {
-          /* Storage is optional. */
-        }
+        rememberLanguage(next);
+        updatePreference(next);
+        onLanguageChange?.(next);
       },
       t: (key) => messages[key][language],
       localize: (text) => text[language],
@@ -38,7 +38,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
         }
       },
     }),
-    [language],
+    [language, onLanguageChange],
   );
   return <LanguageContext value={value}>{children}</LanguageContext>;
 }

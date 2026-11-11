@@ -2,8 +2,8 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 async function english(page: Page, path = '/') {
-  await page.goto(`/#${path}`);
-  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await page.goto(path === '/' ? '/' : path.replace(/([^/])(?=\?|$)/, '$1/'));
+  await page.getByRole('link', { name: 'EN', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 }
 
@@ -21,7 +21,7 @@ test('defaults to Kannada and remembers language across routes and reloads', asy
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('ಕನ್ನಡದ ಧ್ವನಿ. ಕನ್ನಡಿಗರ ಶಕ್ತಿ.');
   await expect(page.locator('.masthead-details')).toContainText('ಕನ್ನಡಪರ ಸಂಘಟನೆಗಳ ಒಕ್ಕೂಟ');
   await expect(page.locator('.masthead-portrait')).toHaveAttribute('alt', /ಕುವೆಂಪು/);
-  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await page.getByRole('link', { name: 'EN', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('The voice of Kannada.');
   await expect(page.locator('.masthead-copy')).toHaveAttribute('lang', 'kn');
   await expect(page.locator('.masthead-portrait')).toHaveAttribute(
@@ -59,11 +59,11 @@ test('renders live Kannada branding with separate images above navigation', asyn
   const tabsBox = (await header.locator('.header-nav-bar').boundingBox())!;
   expect(tabsBox.y).toBeGreaterThanOrEqual(brandingBox.y + brandingBox.height);
   await expect(
-    header.locator('.header-nav-bar').getByRole('button', { name: 'EN', exact: true }),
+    header.locator('.header-nav-bar').getByRole('link', { name: 'EN', exact: true }),
   ).toBeVisible();
   await navigateHeader(page, 'About us');
   await header.getByRole('link', { name: 'Karnataka Rakshana Vedike', exact: true }).click();
-  await expect(page).toHaveURL(/#\/$/);
+  await expect(page).toHaveURL(/\/en\/(?:\?.*)?$/);
 });
 
 test('keeps live branding and navigation usable when both masthead images fail', async ({
@@ -83,8 +83,8 @@ test('keeps live branding and navigation usable when both masthead images fail',
   const after = (await header.boundingBox())!;
   expect(after.height).toBeCloseTo(before.height, 0);
   await navigateHeader(page, 'About us');
-  await expect(page).toHaveURL(/#\/about$/);
-  await page.getByRole('button', { name: 'ಕನ್ನಡ', exact: true }).click();
+  await expect(page).toHaveURL(/\/en\/about\/$/);
+  await page.getByRole('link', { name: 'ಕನ್ನಡ', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'kn');
   await expect(header.locator('.masthead-details')).toContainText('ಕನ್ನಡಪರ ಸಂಘಟನೆಗಳ ಒಕ್ಕೂಟ');
 });
@@ -136,7 +136,7 @@ test('puts the founder in the hero and preserves bilingual organizational conten
 
   await expect(page.getByRole('heading', { name: 'Our vision', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Our mission', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'ಕನ್ನಡ', exact: true }).click();
+  await page.getByRole('link', { name: 'ಕನ್ನಡ', exact: true }).click();
   await expect(page.locator('.hero-leader-card')).toContainText('ಸಂಸ್ಥಾಪಕರು ಮತ್ತು ರಾಜ್ಯಾಧ್ಯಕ್ಷರು');
   await expect(page.locator('.hero-leader-card')).toContainText('ಟಿ ಎ ನಾರಾಯಣ ಗೌಡರು');
   await expect(page.getByRole('heading', { name: 'ನಮ್ಮ ದೂರದೃಷ್ಟಿ', exact: true })).toBeVisible();
@@ -149,9 +149,9 @@ test('organization links stay informational while membership is deferred', async
     .locator('.participation-panel')
     .getByRole('link', { name: 'About us', exact: true })
     .click();
-  await expect(page).toHaveURL(/#\/about$/);
+  await expect(page).toHaveURL(/\/en\/about\/$/);
   await page.goto('/#/membership?wing=legal');
-  await expect(page).toHaveURL(/#\/$/);
+  await expect(page).toHaveURL(/\/en\/(?:\?.*)?$/);
   await expect(page.getByRole('form')).toHaveCount(0);
   await expect(page.getByLabel('Full name')).toHaveCount(0);
 });
@@ -238,7 +238,7 @@ test('district markers support keyboard selection, language changes, and browser
   await expect(page.locator('.district-result h3')).toHaveText('Vijayanagara');
   await page.goBack();
   await expect(page.locator('.district-result h3')).toHaveText('Mandya');
-  await page.getByRole('button', { name: 'ಕನ್ನಡ', exact: true }).click();
+  await page.getByRole('link', { name: 'ಕನ್ನಡ', exact: true }).click();
   await page.getByRole('button', { name: 'ನಿಮ್ಮ ಜಿಲ್ಲೆಯನ್ನು ಆರಿಸಿ: ವಿಜಯನಗರ', exact: true }).click();
   await expect(page.locator('.district-result h3')).toHaveText('ವಿಜಯನಗರ');
   await expect(page.locator('.district-result address')).toContainText('ವಿಜಯನಗರ');
@@ -257,13 +257,13 @@ test('wing tabs keep keyboard control without offering membership registration',
   );
   await expect(page.locator('a[href*="/membership"]')).toHaveCount(0);
   await page.getByRole('tabpanel').getByRole('link', { name: 'Contact', exact: true }).click();
-  await expect(page).toHaveURL(/#\/contact$/);
+  await expect(page).toHaveURL(/\/en\/contact\/$/);
 });
 
 test('pillar dialogs align their content and stay usable in both languages', async ({ page }) => {
   await english(page);
   for (const language of ['en', 'kn']) {
-    if (language === 'kn') await page.getByRole('button', { name: 'ಕನ್ನಡ', exact: true }).click();
+    if (language === 'kn') await page.getByRole('link', { name: 'ಕನ್ನಡ', exact: true }).click();
     await page.evaluate(() => document.fonts.ready);
     const pillars = page.locator('.pillar-card');
     for (let index = 0; index < 4; index++) {
@@ -305,7 +305,7 @@ test('pillar dialogs align their content and stay usable in both languages', asy
 
 test('old credits links no longer expose an editorial bibliography', async ({ page }) => {
   await english(page, '/credits');
-  await expect(page).toHaveURL(/#\/$/);
+  await expect(page).toHaveURL(/\/en\/(?:\?.*)?$/);
   await expect(page.getByRole('link', { name: 'Legal notices', exact: true })).toHaveAttribute(
     'href',
     /licenses\/NOTICE\.txt$/,
@@ -317,14 +317,14 @@ test('journey links open the complete history from home and About, including aft
 }) => {
   await page.goto('/?layout=refined#/');
   await page.getByRole('link', { name: 'ನಮ್ಮ ಪಯಣವನ್ನು ನೋಡಿ', exact: true }).click();
-  await expect(page).toHaveURL(/\?layout=refined#\/history$/);
+  await expect(page).toHaveURL(/\/history\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('ಕರ್ನಾಟಕ ರಕ್ಷಣಾ ವೇದಿಕೆಯ ಪಯಣ');
   await expect(page.locator('.history-chapter-list article')).toHaveCount(5);
   await expect(page.locator('.timeline-year').first()).toHaveText('1999');
   await expect(page.locator('.timeline-year').last()).toHaveText('2026');
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('ಕರ್ನಾಟಕ ರಕ್ಷಣಾ ವೇದಿಕೆಯ ಪಯಣ');
-  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await page.getByRole('link', { name: 'EN', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
     'The story of Karnataka Rakshana Vedike',
   );
@@ -336,7 +336,7 @@ test('journey links open the complete history from home and About, including aft
   await page
     .getByRole('link', { name: 'Read the complete history & timeline', exact: true })
     .click();
-  await expect(page).toHaveURL(/#\/history$/);
+  await expect(page).toHaveURL(/\/en\/history\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Karnataka Rakshana Vedike');
 });
 
@@ -495,7 +495,7 @@ for (const path of [
   '/districts',
 ]) {
   test(`Kannada accessibility: ${path}`, async ({ page }) => {
-    await page.goto(`/#${path}`);
+    await page.goto(path === '/' ? '/' : `${path}/`);
     await expect(page.locator('html')).toHaveAttribute('lang', 'kn');
     await page.evaluate(() => document.fonts.ready);
     const result = await new AxeBuilder({ page })
@@ -505,20 +505,19 @@ for (const path of [
   });
 }
 
-test('works when mounted under a GitHub repository subpath', async ({ page }) => {
-  await page.route('http://127.0.0.1:4173/karave-project/**', async (route) => {
-    const url = new URL(route.request().url());
-    url.pathname = url.pathname.replace('/karave-project', '') || '/';
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
-  await page.goto('/karave-project/#/membership');
-  await page.getByRole('button', { name: 'EN', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('The voice of Kannada.');
-  await page.getByRole('link', { name: 'Karnataka Rakshana Vedike', exact: true }).first().click();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('The voice of Kannada.');
+test('clean deep links retain language, content, and local assets after reload', async ({
+  page,
+}) => {
+  await english(page, '/history');
+  await expect(page).toHaveURL(/\/en\/history\/$/);
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'The story of Karnataka Rakshana Vedike',
+  );
   await expect(page.locator('.masthead-emblem')).toHaveJSProperty('naturalWidth', 433);
   await expect(page.locator('.masthead-portrait')).toHaveJSProperty('naturalWidth', 480);
-  await expect(page.locator('.masthead-name')).toHaveText('ಕರ್ನಾಟಕ ರಕ್ಷಣಾ ವೇದಿಕೆ');
-  await expect(page.locator('.leader-image')).toHaveJSProperty('naturalWidth', 400);
+  await page.getByRole('link', { name: 'ಕನ್ನಡ', exact: true }).click();
+  await expect(page).toHaveURL(/\/history\/$/);
+  await page.reload();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('ಕರ್ನಾಟಕ ರಕ್ಷಣಾ ವೇದಿಕೆಯ ಪಯಣ');
 });

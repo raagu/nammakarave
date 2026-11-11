@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from './LocalizedLink';
 import { pillars } from '../content/site';
 import { useLanguage } from '../i18n/context';
 import { Icon } from './Icon';

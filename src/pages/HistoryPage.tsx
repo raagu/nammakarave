@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../components/LocalizedLink';
 import { historyChapters } from '../content/history';
 import { useLanguage } from '../i18n/context';
 import { PageHeading, SectionHeading } from '../components/SectionHeading';

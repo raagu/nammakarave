@@ -5,3 +5,8 @@ playwright-report
 test-results
 public/licenses
 package-lock.json
+/google*.html
+public/google*.html
+
+# Build-time server renderer; never published.
+.ssg/

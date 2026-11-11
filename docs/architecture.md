@@ -26,7 +26,7 @@ src/
   styles/               Tailwind theme, design system, responsive components
 public/                 Vendored photos, font licenses, favicon
 tests/                  Production-build browser and accessibility tests
-scripts/                Build-budget verification
+scripts/                Static generation, SEO and build-budget verification
 .github/workflows/      Validation and GitHub Pages deployment
 ```
 
@@ -40,25 +40,27 @@ The homepage composes organization purpose, vision and mission, four action prio
 
 ## Data flow and state transitions
 
-| State                         | Owner              | Persistence                        | Transitions                                                                |
-| ----------------------------- | ------------------ | ---------------------------------- | -------------------------------------------------------------------------- |
-| Language                      | `LanguageProvider` | One localStorage preference        | Default Kannada → explicit selection; denied storage remains usable        |
-| Page and shareable selections | React Router       | URL fragment/query inside fragment | Navigation, reload, browser history, district/wing/media selection         |
-| Mobile navigation             | Header             | None                               | Closed → modal open → close/Escape/navigation                              |
-| Media permission              | Media viewer       | None                               | Poster → explicit load → external iframe; reset when dialog unmounts       |
-| Supporter preview (dormant)   | Membership feature | Component memory only              | Editing → validation errors or preview → edit; route unmount removes state |
-| Card export                   | Membership feature | Download chosen by visitor         | Idle → generating → success/error; retry supported                         |
-| Milestone/gallery filter      | Feature component  | None                               | All → category; data remains immutable                                     |
+| State                         | Owner              | Persistence                          | Transitions                                                                |
+| ----------------------------- | ------------------ | ------------------------------------ | -------------------------------------------------------------------------- |
+| Language                      | `LanguageProvider` | URL plus one localStorage preference | URL language → language link; legacy hash links use saved preference       |
+| Page and shareable selections | React Router       | Clean path and URL query parameters  | Navigation, reload, browser history, district/wing/media selection         |
+| Mobile navigation             | Header             | None                                 | Closed → modal open → close/Escape/navigation                              |
+| Media permission              | Media viewer       | None                                 | Poster → explicit load → external iframe; reset when dialog unmounts       |
+| Supporter preview (dormant)   | Membership feature | Component memory only                | Editing → validation errors or preview → edit; route unmount removes state |
+| Card export                   | Membership feature | Download chosen by visitor           | Idle → generating → success/error; retry supported                         |
+| Milestone/gallery filter      | Feature component  | None                                 | All → category; data remains immutable                                     |
 
 Validation is implemented once with Zod. It accepts Unicode names, rejects controls/markup, validates Indian mobile numbers and known content IDs, normalizes supported digit sets, and requires preview acknowledgement. The UI maps error codes to the active language. Form values are never interpolated into HTML or executable strings. React renders text; Canvas draws card text directly.
 
 ## Routing and rendering decision
 
-`HashRouter` is intentional. GitHub Pages does not provide arbitrary SPA rewrites. Fragment routes and relative Vite asset URLs support custom domains, repository paths, and direct-link reloads without depending on a deployed 404 fallback.
+`BrowserRouter` uses explicit Kannada paths and `/en/` English paths. The URL controls language, while localStorage retains a preference for old fragment links. Shared localized links preserve path/query/hash and generate language-correct, crawlable anchors. Both languages share existing page components and editorial collections.
 
-Tradeoff: route-specific HTML and social previews are not prerendered. The root document supplies the site's baseline metadata; page titles/descriptions update in the browser. If per-page search indexing and share previews become a firm requirement, introduce build-time prerendering or a suitable static-generation layer rather than assuming browser-updated metadata is sufficient for all crawlers.
+The build first compiles the client and a separate Node renderer, then generates all 22 complete page documents, static aliases, a noindex 404, sitemap, and robots file. React's static rendering API resolves lazy routes before the documents are written. The browser hydrates matching documents; selector-query variants and unknown routes mount on the client to avoid mismatching the default snapshot. Physical directory indexes support direct links on GitHub Pages without server rewrites. A build-time year prevents time-dependent footer hydration mismatches.
 
-Secondary routes are lazy loaded. Membership validation is isolated to its route. The homepage reuses several interactive feature views to make discovery possible without opening every page.
+Search metadata is centralized in `src/content/seo.ts`. Generated head tags and client navigation use that same contract. The 20 eligible documents have distinct HTTPS canonicals, unique descriptions/titles, reciprocal language annotations, social metadata, and approved-fact JSON-LD. Sample district pages are noindex and absent from the sitemap until their contacts are verified. The build rejects incomplete HTML, broken local resources, and metadata inconsistencies. See [Technical SEO](technical-seo.md) for exact policies and deployment checks.
+
+Secondary client routes remain lazy loaded. The server renderer is build-only and excluded from the published artifact. The dormant membership implementation is not loaded by the public router.
 
 ## Accessibility and failure handling
 
@@ -92,7 +94,7 @@ Build-time budgets enforce 150 KiB compressed initial JavaScript, 20 KiB compres
 
 The workflow uses `npm ci`, strict checks, a production build, budget checks, and browser tests before uploading `dist/`. A separate job with Pages/OIDC permissions deploys only a passing main-branch artifact. Action versions are pinned to revisions inspected from the upstream tags. Pull requests never deploy. Only `dist/` is published; source/tests/node_modules are excluded.
 
-GitHub's deployment status and the attached browser failure report provide deployment diagnostics. No remote analytics or error-reporting service is configured. Manual release checks should include the public URL, one direct route, language switching, central contact links, one media dialog, and selection through the district map and dropdown. No unconfigured monitoring or operational alert is claimed.
+GitHub's deployment status and the attached browser failure report provide deployment diagnostics. No remote analytics or error-reporting service is configured. Manual release checks should include the public URL, both language versions of a direct route, sitemap/robots, a genuine 404, language switching, central contact links, one media dialog, and selection through the district map and dropdown. No unconfigured monitoring or operational alert is claimed.
 
 If checks fail, no new artifact deploys and the current release remains. If deployment fails, inspect the workflow and Pages environment. To roll back, revert the source change to the prior known-good commit on main and let the same validated pipeline redeploy. Historical workflow reruns depend on GitHub artifact retention; rebuilding a known source revision avoids relying on expired artifacts.
 
@@ -106,7 +108,7 @@ Implementation behavior is verified through the source and automated checks docu
 
 ## Organization redesign boundaries
 
-The public site contains eleven content routes and two legacy redirects (`/membership` and `/credits`) to the home page. `LeadershipPage`, `ProgrammesPage`, and `CampaignsPage` are lazy-loaded alongside the existing secondary routes. Reusable organization sections are under `src/features/organization/`; Home composes the founder hero, purpose, priorities, president's message, programmes, history, campaign summaries, upcoming announcements, participation links, and FAQs. Founder identity is owner-approved; facts and attributed outcomes retain their sources.
+The public site contains eleven content routes in each language, plus legacy membership/credits redirects and Kannada-prefix aliases. `LeadershipPage`, `ProgrammesPage`, and `CampaignsPage` are lazy-loaded alongside the existing secondary routes. Reusable organization sections are under `src/features/organization/`; Home composes the founder hero, purpose, priorities, president's message, programmes, history, campaign summaries, upcoming announcements, participation links, and FAQs. Founder identity is owner-approved; facts and attributed outcomes retain their sources.
 
 `src/content/official.ts` provides typed bilingual content and editorial state. A president's message marked `draft` is shown with a review label only when `import.meta.env.DEV` is true. The production build shows an approved-message notice until its status changes. Programme images use `imageStatus`: `reference-only` images may be displayed locally for review, while public display requires `approved`. Approved image paths must point to publishable local assets. `review-media/` is outside `public/`, ignored by Git, and checked to be absent from the built artifact. Reference photographs introduce no external requests during normal browsing.
 
