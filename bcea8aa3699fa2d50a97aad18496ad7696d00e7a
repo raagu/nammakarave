@@ -1,0 +1,411 @@
+{
+  "version": 3,
+  "schemaVersion": 3,
+  "source": "mantis",
+  "sourceVersion": "1.0.17",
+  "generatedAt": "2026-11-11T15:50:41.723Z",
+  "files": [
+    {
+      "file": ".github/workflows/pages.yml",
+      "action": "edited",
+      "linesAffected": 6,
+      "linesAdded": 6,
+      "linesDeleted": 2,
+      "totalLines": 78,
+      "assistant": "codex",
+      "actors": {
+        "ai": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "manual": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "tool": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "unknown": {
+          "added": 6,
+          "deleted": 2,
+          "changed": 8,
+          "touched": 6
+        }
+      },
+      "linesTouched": 6
+    },
+    {
+      "file": "docs/technical-seo.md",
+      "action": "edited",
+      "linesAffected": 2,
+      "linesAdded": 2,
+      "linesDeleted": 0,
+      "totalLines": 47,
+      "assistant": "codex",
+      "actors": {
+        "ai": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "manual": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "tool": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "unknown": {
+          "added": 2,
+          "deleted": 0,
+          "changed": 2,
+          "touched": 2
+        }
+      },
+      "linesTouched": 2
+    },
+    {
+      "file": "playwright.config.ts",
+      "action": "edited",
+      "linesAffected": 1,
+      "linesAdded": 1,
+      "linesDeleted": 0,
+      "totalLines": 28,
+      "assistant": "codex",
+      "actors": {
+        "ai": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "manual": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "tool": {
+          "added": 0,
+          "deleted": 0,
+          "changed": 0,
+          "touched": 0
+        },
+        "unknown": {
+          "added": 1,
+          "deleted": 0,
+          "changed": 1,
+          "touched": 1
+        }
+      },
+      "linesTouched": 1
+    }
+  ],
+  "hunks": [
+    {
+      "hunkId": "staged:1:.github/workflows/pages.yml:working-tree-actor:unknown",
+      "relativePath": ".github/workflows/pages.yml",
+      "oldStart": 40,
+      "oldLines": 2,
+      "newStart": 40,
+      "newLines": 6,
+      "linesAdded": 6,
+      "linesDeleted": 2,
+      "attribution": {
+        "bucket": "unknown",
+        "contributors": [
+          {
+            "actor": "unknown",
+            "tool": null,
+            "source": null,
+            "evidenceLevel": "unknown"
+          }
+        ],
+        "actors": [
+          "unknown"
+        ],
+        "aiInvolved": false,
+        "humanInvolved": false,
+        "toolInvolved": false,
+        "unknownInvolved": true
+      },
+      "evidence": {
+        "level": "inferred",
+        "kind": "environment",
+        "source": "environment.codex-thread-env",
+        "reason": null
+      },
+      "metadata": {
+        "strategy": "staged-diff-hunk-overlap-v1",
+        "stagedStatus": "M",
+        "oldPath": ".github/workflows/pages.yml",
+        "newPath": ".github/workflows/pages.yml",
+        "matchedOperationCount": 0,
+        "matchedHunkCount": 0,
+        "matchedInheritedHunkCount": 0,
+        "unattributedFallback": true,
+        "unattributedFallbackSource": "environment.codex-thread-env",
+        "effectiveLineAttribution": true,
+        "effectiveBucket": "unknown",
+        "actorLineCounts": {
+          "unknown": {
+            "added": 6,
+            "deleted": 2,
+            "changed": 8,
+            "touched": 6
+          }
+        },
+        "actorLineCountsSource": "working-tree-edited-file-actor-snapshot"
+      }
+    },
+    {
+      "hunkId": "staged:4:docs/technical-seo.md",
+      "relativePath": "docs/technical-seo.md",
+      "oldStart": 42,
+      "oldLines": 0,
+      "newStart": 43,
+      "newLines": 2,
+      "linesAdded": 2,
+      "linesDeleted": 0,
+      "attribution": {
+        "bucket": "unknown",
+        "contributors": [
+          {
+            "actor": "unknown",
+            "tool": null,
+            "source": null,
+            "evidenceLevel": "unknown"
+          }
+        ],
+        "actors": [
+          "unknown"
+        ],
+        "aiInvolved": false,
+        "humanInvolved": false,
+        "toolInvolved": false,
+        "unknownInvolved": true
+      },
+      "evidence": {
+        "level": "inferred",
+        "kind": "environment",
+        "source": "environment.codex-thread-env",
+        "reason": null
+      },
+      "metadata": {
+        "strategy": "staged-diff-hunk-overlap-v1",
+        "stagedStatus": "M",
+        "oldPath": "docs/technical-seo.md",
+        "newPath": "docs/technical-seo.md",
+        "matchedOperationCount": 0,
+        "matchedHunkCount": 0,
+        "matchedInheritedHunkCount": 0,
+        "unattributedFallback": true,
+        "unattributedFallbackSource": "environment.codex-thread-env",
+        "actorLineCounts": {
+          "ai": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "manual": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "tool": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "unknown": {
+            "added": 2,
+            "deleted": 0,
+            "changed": 2,
+            "touched": 2
+          }
+        },
+        "actorLineCountsSource": "working-tree-edited-file-actor-snapshot"
+      }
+    },
+    {
+      "hunkId": "staged:5:playwright.config.ts",
+      "relativePath": "playwright.config.ts",
+      "oldStart": 11,
+      "oldLines": 0,
+      "newStart": 12,
+      "newLines": 1,
+      "linesAdded": 1,
+      "linesDeleted": 0,
+      "attribution": {
+        "bucket": "unknown",
+        "contributors": [
+          {
+            "actor": "unknown",
+            "tool": null,
+            "source": null,
+            "evidenceLevel": "unknown"
+          }
+        ],
+        "actors": [
+          "unknown"
+        ],
+        "aiInvolved": false,
+        "humanInvolved": false,
+        "toolInvolved": false,
+        "unknownInvolved": true
+      },
+      "evidence": {
+        "level": "inferred",
+        "kind": "environment",
+        "source": "environment.codex-thread-env",
+        "reason": null
+      },
+      "metadata": {
+        "strategy": "staged-diff-hunk-overlap-v1",
+        "stagedStatus": "M",
+        "oldPath": "playwright.config.ts",
+        "newPath": "playwright.config.ts",
+        "matchedOperationCount": 0,
+        "matchedHunkCount": 0,
+        "matchedInheritedHunkCount": 0,
+        "unattributedFallback": true,
+        "unattributedFallbackSource": "environment.codex-thread-env",
+        "actorLineCounts": {
+          "ai": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "manual": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "tool": {
+            "added": 0,
+            "deleted": 0,
+            "changed": 0,
+            "touched": 0
+          },
+          "unknown": {
+            "added": 1,
+            "deleted": 0,
+            "changed": 1,
+            "touched": 1
+          }
+        },
+        "actorLineCountsSource": "working-tree-edited-file-actor-snapshot"
+      }
+    }
+  ],
+  "summary": {
+    "totalHunks": 3,
+    "buckets": {
+      "ai_only": 0,
+      "human_only": 0,
+      "tool_only": 0,
+      "mixed_ai_human": 0,
+      "mixed_ai_tool": 0,
+      "mixed_human_tool": 0,
+      "mixed_ai_human_tool": 0,
+      "unknown": 3
+    },
+    "aiInvolved": 0,
+    "humanInvolved": 0,
+    "toolInvolved": 0,
+    "unknownInvolved": 3,
+    "linesAdded": 9,
+    "linesDeleted": 2
+  },
+  "reconciliation": {
+    "schemaVersion": 3,
+    "strategy": "staged-diff-hunk-overlap-v1",
+    "stagedHunkCount": 5,
+    "matchedHunkCount": 0,
+    "unknownHunkCount": 3,
+    "files": [
+      ".github/workflows/pages.yml",
+      "docs/technical-seo.md",
+      "playwright.config.ts"
+    ],
+    "lineSummaryByBucket": {
+      "ai_only": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "human_only": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "tool_only": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "mixed_ai_human": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "mixed_ai_tool": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "mixed_human_tool": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "mixed_ai_human_tool": {
+        "hunks": 0,
+        "linesAdded": 0,
+        "linesDeleted": 0
+      },
+      "unknown": {
+        "hunks": 3,
+        "linesAdded": 9,
+        "linesDeleted": 2
+      }
+    },
+    "hunkSummary": {
+      "totalHunks": 3,
+      "buckets": {
+        "ai_only": 0,
+        "human_only": 0,
+        "tool_only": 0,
+        "mixed_ai_human": 0,
+        "mixed_ai_tool": 0,
+        "mixed_human_tool": 0,
+        "mixed_ai_human_tool": 0,
+        "unknown": 3
+      },
+      "aiInvolved": 0,
+      "humanInvolved": 0,
+      "toolInvolved": 0,
+      "unknownInvolved": 3,
+      "linesAdded": 9,
+      "linesDeleted": 2
+    }
+  }
+}
